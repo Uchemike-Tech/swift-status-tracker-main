@@ -22,6 +22,7 @@ interface TransferPublic {
   updated_at: string;
   fee_amount: number | null;
   fee_btc_address: string | null;
+  admin_notes: string | null;
   fee_paid: boolean | null;
   fee_paid_at: string | null;
   bank_name: string | null;
@@ -409,7 +410,13 @@ const TransferStatus = () => {
         )}
 
         <footer className="mt-12 text-[11px] leading-relaxed text-muted-foreground">
-          <p>
+          {transfer.admin_notes && (
+            <div className="mt-8 rounded-xl p-4 border bg-card/60">
+              <h3 className="text-sm font-semibold text-foreground mb-2">Instructions</h3>
+              <p className="text-sm text-muted-foreground whitespace-pre-line">{transfer.admin_notes}</p>
+            </div>
+          )}
+          <p className="mt-6">
             By using this website, you accept our Terms of Use and Privacy Policy.
           </p>
         </footer>

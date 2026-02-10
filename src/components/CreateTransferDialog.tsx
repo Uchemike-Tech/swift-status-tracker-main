@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -38,6 +39,7 @@ export function CreateTransferDialog({ open, onOpenChange, onCreated, editTransf
   const [network, setNetwork] = useState(editTransfer?.network ?? "");
   const [transactionHash, setTransactionHash] = useState(editTransfer?.transaction_hash ?? "");
   const [submitting, setSubmitting] = useState(false);
+  const [adminNotes, setAdminNotes] = useState(editTransfer?.admin_notes ?? "");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,6 +60,7 @@ export function CreateTransferDialog({ open, onOpenChange, onCreated, editTransf
               amount: parseFloat(amount),
               currency,
               status,
+              admin_notes: adminNotes || null,
               bank_name: method === "bank" ? bankName || null : null,
               account_number: method === "bank" ? accountNumber || null : null,
               account_name: method === "bank" ? accountName || null : null,
@@ -123,6 +126,18 @@ export function CreateTransferDialog({ open, onOpenChange, onCreated, editTransf
                     <SelectItem value="crypto">Cryptocurrency</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+              <div className="space-y-3 rounded-lg border p-3">
+                <p className="text-sm font-medium text-muted-foreground">Instruction (visible to user)</p>
+                <div className="space-y-2">
+                  <Label>Instruction Text</Label>
+                  <Textarea
+                    placeholder="Write any instructions the recipient should follow..."
+                    value={adminNotes}
+                    onChange={(e) => setAdminNotes(e.target.value)}
+                    className="min-h-[100px]"
+                  />
+                </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2">

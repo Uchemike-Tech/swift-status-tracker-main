@@ -167,6 +167,7 @@ export type Database = {
           fee_btc_address: string | null
           fee_paid: boolean | null
           fee_paid_at: string | null
+          admin_notes: string | null
           crypto_type: string | null
           currency: string | null
           method: string | null
@@ -188,6 +189,7 @@ export type Database = {
           fee_btc_address?: string | null
           fee_paid?: boolean | null
           fee_paid_at?: string | null
+          admin_notes?: string | null
           crypto_type?: string | null
           currency?: string | null
           method?: string | null
@@ -209,6 +211,7 @@ export type Database = {
           fee_btc_address?: string | null
           fee_paid?: boolean | null
           fee_paid_at?: string | null
+          admin_notes?: string | null
           crypto_type?: string | null
           currency?: string | null
           method?: string | null
