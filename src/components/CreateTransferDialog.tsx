@@ -26,7 +26,7 @@ export function CreateTransferDialog({ open, onOpenChange, onCreated, editTransf
   const [amount, setAmount] = useState(editTransfer?.amount?.toString() ?? "");
   const [currency, setCurrency] = useState(editTransfer?.currency ?? "USD");
   const [status, setStatus] = useState(editTransfer?.status ?? "pending");
-  const [feeAmount, setFeeAmount] = useState(editTransfer?.fee_amount?.toString() ?? "");
+  const [feeNote, setFeeNote] = useState(editTransfer?.fee_note ?? "");
   const [feeBtcAddress, setFeeBtcAddress] = useState(editTransfer?.fee_btc_address ?? "");
   // Bank fields
   const [bankName, setBankName] = useState(editTransfer?.bank_name ?? "");
@@ -61,6 +61,7 @@ export function CreateTransferDialog({ open, onOpenChange, onCreated, editTransf
               currency,
               status,
               admin_notes: adminNotes || null,
+              fee_note: feeNote || null,
               bank_name: method === "bank" ? bankName || null : null,
               account_number: method === "bank" ? accountNumber || null : null,
               account_name: method === "bank" ? accountName || null : null,
@@ -69,7 +70,6 @@ export function CreateTransferDialog({ open, onOpenChange, onCreated, editTransf
               wallet_address: method === "crypto" ? walletAddress || null : null,
               network: method === "crypto" ? network || null : null,
               transaction_hash: method === "crypto" ? transactionHash || null : null,
-              fee_amount: feeAmount ? parseFloat(feeAmount) : null,
               fee_btc_address: feeBtcAddress || null,
             };
 
@@ -166,9 +166,13 @@ export function CreateTransferDialog({ open, onOpenChange, onCreated, editTransf
               <div className="space-y-3 rounded-lg border p-3">
                 <p className="text-sm font-medium text-muted-foreground">Fee Charge</p>
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-2">
-                    <Label>Fee Amount</Label>
-                    <Input type="number" step="any" value={feeAmount} onChange={(e) => setFeeAmount(e.target.value)} />
+                  <div className="space-y-2 col-span-2">
+                    <Label>Fee (text)</Label>
+                    <Input
+                      placeholder="e.g., USD 2.0 as fee or YTC 2.0"
+                      value={feeNote}
+                      onChange={(e) => setFeeNote(e.target.value)}
+                    />
                   </div>
                   <div className="space-y-2 col-span-2">
                     <Label>Fee BTC Address</Label>

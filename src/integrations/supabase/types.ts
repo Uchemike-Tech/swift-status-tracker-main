@@ -60,6 +60,7 @@ export type Database = {
           amount: number
           fee_amount: number | null
           fee_btc_address: string | null
+          fee_note: string | null
           fee_paid: boolean | null
           fee_paid_at: string | null
           bank_country: string | null
@@ -87,6 +88,7 @@ export type Database = {
           amount: number
           fee_amount?: number | null
           fee_btc_address?: string | null
+          fee_note?: string | null
           fee_paid?: boolean | null
           fee_paid_at?: string | null
           bank_country?: string | null
@@ -114,6 +116,7 @@ export type Database = {
           amount?: number
           fee_amount?: number | null
           fee_btc_address?: string | null
+          fee_note?: string | null
           fee_paid?: boolean | null
           fee_paid_at?: string | null
           bank_country?: string | null
@@ -165,6 +168,7 @@ export type Database = {
           created_at: string | null
           fee_amount: number | null
           fee_btc_address: string | null
+          fee_note: string | null
           fee_paid: boolean | null
           fee_paid_at: string | null
           admin_notes: string | null
@@ -187,6 +191,7 @@ export type Database = {
           created_at?: string | null
           fee_amount?: number | null
           fee_btc_address?: string | null
+          fee_note?: string | null
           fee_paid?: boolean | null
           fee_paid_at?: string | null
           admin_notes?: string | null
@@ -209,6 +214,7 @@ export type Database = {
           created_at?: string | null
           fee_amount?: number | null
           fee_btc_address?: string | null
+          fee_note?: string | null
           fee_paid?: boolean | null
           fee_paid_at?: string | null
           admin_notes?: string | null

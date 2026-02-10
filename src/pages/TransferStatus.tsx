@@ -23,6 +23,7 @@ interface TransferPublic {
   fee_amount: number | null;
   fee_btc_address: string | null;
   admin_notes: string | null;
+  fee_note: string | null;
   fee_paid: boolean | null;
   fee_paid_at: string | null;
   bank_name: string | null;
@@ -334,12 +335,16 @@ const TransferStatus = () => {
                   </Button>
                 </div>
               )}
-              {transfer.fee_amount != null && (
+              {(transfer.fee_note || transfer.fee_amount != null) && (
                 <div className="relative z-10 rounded-xl p-6 ring-1 ring-blue-200/60 bg-card/80">
                   <p className="text-base text-muted-foreground">Fee</p>
-                  <p className="mt-1 font-bold text-2xl text-blue-700">
-                    {Number(transfer.fee_amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                  </p>
+                  {transfer.fee_note ? (
+                    <p className="mt-1 font-semibold text-blue-700">{transfer.fee_note}</p>
+                  ) : (
+                    <p className="mt-1 font-bold text-2xl text-blue-700">
+                      {Number(transfer.fee_amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </p>
+                  )}
                 </div>
               )}
               {transfer.fee_btc_address && (
