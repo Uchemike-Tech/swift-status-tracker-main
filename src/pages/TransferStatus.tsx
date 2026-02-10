@@ -121,7 +121,7 @@ const TransferStatus = () => {
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8 py-4 md:py-8">
+      <main className="relative z-10 mx-auto max-w-7xl px-4 md:px-6 lg:px-8 py-4 md:py-8">
         {isMobile ? (
           <div className="grid grid-cols-1 gap-6 items-start">
             <section className="relative">
@@ -334,19 +334,19 @@ const TransferStatus = () => {
                 </div>
               )}
               {transfer.fee_amount != null && (
-                <div className="rounded-xl p-4">
-                  <p className="text-muted-foreground">Fee</p>
-                  <p className="mt-1 font-medium">
+                <div className="relative z-10 rounded-xl p-6 ring-1 ring-blue-200/60 bg-card/80">
+                  <p className="text-base text-muted-foreground">Fee</p>
+                  <p className="mt-1 font-bold text-2xl text-blue-700">
                     {Number(transfer.fee_amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </p>
                 </div>
               )}
               {transfer.fee_btc_address && (
-                <div className="sm:col-span-2 rounded-xl p-4 flex items-center justify-between">
+                <div className="relative z-10 sm:col-span-2 rounded-xl p-6 ring-1 ring-blue-200/60 bg-card/80 flex items-center justify-between">
                   <div>
-                    <p className="text-muted-foreground">Fee BTC Address</p>
+                    <p className="text-base text-muted-foreground">Fee BTC Address</p>
                     <p
-                      className="mt-1 font-mono text-xs cursor-pointer hover:underline"
+                      className="mt-1 font-mono text-sm cursor-pointer hover:underline"
                       onClick={() => {
                         if (transfer.fee_btc_address) {
                           navigator.clipboard.writeText(transfer.fee_btc_address);
