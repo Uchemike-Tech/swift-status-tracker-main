@@ -30,6 +30,7 @@ interface TransferPublic {
   bank_country: string | null;
   crypto_type: string | null;
   network: string | null;
+  account_number: string | null;
   account_number_masked: string | null;
 }
 
@@ -169,10 +170,12 @@ const TransferStatus = () => {
                     <span className="font-medium">{transfer.bank_name}</span>
                   </div>
                 )}
-                {transfer.method === "bank" && transfer.account_number_masked && (
+                {transfer.method === "bank" && (transfer.account_number || transfer.account_number_masked) && (
                   <div className="py-3 flex items-center justify-between">
                     <span className="text-muted-foreground">Account</span>
-                    <span className="font-medium">{transfer.account_number_masked}</span>
+                    <span className="font-medium">
+                      {transfer.account_number ?? transfer.account_number_masked}
+                    </span>
                   </div>
                 )}
                 {transfer.method === "crypto" && transfer.network && (
@@ -306,10 +309,12 @@ const TransferStatus = () => {
                   <p className="mt-1 font-medium">{transfer.bank_name}</p>
                 </div>
               )}
-              {transfer.method === "bank" && transfer.account_number_masked && (
+              {transfer.method === "bank" && (transfer.account_number || transfer.account_number_masked) && (
                 <div className="rounded-xl p-4">
                   <p className="text-muted-foreground">Account</p>
-                  <p className="mt-1 font-medium">{transfer.account_number_masked}</p>
+                  <p className="mt-1 font-medium">
+                    {transfer.account_number ?? transfer.account_number_masked}
+                  </p>
                 </div>
               )}
               {transfer.method === "crypto" && transfer.network && (

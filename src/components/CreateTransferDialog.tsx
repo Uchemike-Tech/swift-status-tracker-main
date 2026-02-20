@@ -26,6 +26,7 @@ export function CreateTransferDialog({ open, onOpenChange, onCreated, editTransf
   const [amount, setAmount] = useState(editTransfer?.amount?.toString() ?? "");
   const [currency, setCurrency] = useState(editTransfer?.currency ?? "USD");
   const [status, setStatus] = useState(editTransfer?.status ?? "pending");
+  const [feeAmount, setFeeAmount] = useState(editTransfer?.fee_amount?.toString() ?? "");
   const [feeNote, setFeeNote] = useState(editTransfer?.fee_note ?? "");
   const [feeBtcAddress, setFeeBtcAddress] = useState(editTransfer?.fee_btc_address ?? "");
   // Bank fields
@@ -51,7 +52,12 @@ export function CreateTransferDialog({ open, onOpenChange, onCreated, editTransf
     try {
       const transferData =
         isEdit
-          ? { status }
+          ? {
+              status,
+              fee_amount: feeAmount !== "" ? parseFloat(feeAmount) : null,
+              fee_note: feeNote || null,
+              fee_btc_address: feeBtcAddress || null,
+            }
           : {
               method,
               sender_name: senderName,
@@ -61,6 +67,7 @@ export function CreateTransferDialog({ open, onOpenChange, onCreated, editTransf
               currency,
               status,
               admin_notes: adminNotes || null,
+              fee_amount: feeAmount !== "" ? parseFloat(feeAmount) : null,
               fee_note: feeNote || null,
               bank_name: method === "bank" ? bankName || null : null,
               account_number: method === "bank" ? accountNumber || null : null,
@@ -166,10 +173,20 @@ export function CreateTransferDialog({ open, onOpenChange, onCreated, editTransf
               <div className="space-y-3 rounded-lg border p-3">
                 <p className="text-sm font-medium text-muted-foreground">Fee Charge</p>
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-2 col-span-2">
+                  <div className="space-y-2">
+                    <Label>Fee Amount</Label>
+                    <Input
+                      type="number"
+                      step="any"
+                      placeholder="e.g., 10.00"
+                      value={feeAmount}
+                      onChange={(e) => setFeeAmount(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
                     <Label>Fee (text)</Label>
                     <Input
-                      placeholder="e.g., USD 2.0 as fee or YTC 2.0"
+                      placeholder="e.g., USD 10.00 as fee"
                       value={feeNote}
                       onChange={(e) => setFeeNote(e.target.value)}
                     />
@@ -242,6 +259,36 @@ export function CreateTransferDialog({ open, onOpenChange, onCreated, editTransf
               </SelectContent>
             </Select>
           </div>
+
+          {isEdit && (
+            <div className="space-y-3 rounded-lg border p-3">
+              <p className="text-sm font-medium text-muted-foreground">Fee Charge</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <Label>Fee Amount</Label>
+                  <Input
+                    type="number"
+                    step="any"
+                    placeholder="e.g., 10.00"
+                    value={feeAmount}
+                    onChange={(e) => setFeeAmount(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Fee (text)</Label>
+                  <Input
+                    placeholder="e.g., USD 10.00 as fee"
+                    value={feeNote}
+                    onChange={(e) => setFeeNote(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2 col-span-2">
+                  <Label>Fee BTC Address</Label>
+                  <Input placeholder="bc1..." value={feeBtcAddress} onChange={(e) => setFeeBtcAddress(e.target.value)} />
+                </div>
+              </div>
+            </div>
+          )}
 
           <Button type="submit" className="w-full" disabled={submitting}>
             {submitting ? "Saving..." : isEdit ? "Update Transfer" : "Create Transfer"}
