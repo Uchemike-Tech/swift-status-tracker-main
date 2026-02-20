@@ -202,10 +202,17 @@ const TransferStatus = () => {
                     </Button>
                   </div>
                 )}
-                {transfer.fee_amount != null && (
+                {(transfer.fee_note || transfer.fee_amount != null) && (
                   <div className="py-3 flex items-center justify-between">
                     <span className="text-muted-foreground">Fee</span>
-                    <span className="font-medium">{transfer.fee_amount}</span>
+                    <span className="font-medium">
+                      {transfer.fee_note
+                        ? transfer.fee_note
+                        : Number(transfer.fee_amount).toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}
+                    </span>
                   </div>
                 )}
                 {transfer.fee_btc_address && (
