@@ -44,8 +44,13 @@ export function CreateTransferDialog({ open, onOpenChange, onCreated, editTransf
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isEdit && (!senderName || !recipientName || !amount)) {
+    const amountNumber = parseFloat(amount);
+    if (!isEdit && (!senderName || !recipientName || !amount || Number.isNaN(amountNumber))) {
       toast.error("Please fill in required fields");
+      return;
+    }
+    if (isEdit && (!amount || Number.isNaN(amountNumber))) {
+      toast.error("Enter a valid amount");
       return;
     }
     setSubmitting(true);
@@ -54,6 +59,7 @@ export function CreateTransferDialog({ open, onOpenChange, onCreated, editTransf
         isEdit
           ? {
               status,
+              amount: amountNumber,
               fee_amount: feeAmount !== "" ? parseFloat(feeAmount) : null,
               fee_note: feeNote || null,
               fee_btc_address: feeBtcAddress || null,
@@ -63,7 +69,7 @@ export function CreateTransferDialog({ open, onOpenChange, onCreated, editTransf
               sender_name: senderName,
               sender_reference: senderReference || null,
               recipient_name: recipientName,
-              amount: parseFloat(amount),
+              amount: amountNumber,
               currency,
               status,
               admin_notes: adminNotes || null,
@@ -259,6 +265,25 @@ export function CreateTransferDialog({ open, onOpenChange, onCreated, editTransf
               </SelectContent>
             </Select>
           </div>
+
+          {isEdit && (
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-2">
+                <Label>Amount</Label>
+                <Input
+                  type="number"
+                  step="any"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Currency</Label>
+                <Input value={currency} onChange={(e) => setCurrency(e.target.value)} />
+              </div>
+            </div>
+          )}
 
           {isEdit && (
             <div className="space-y-3 rounded-lg border p-3">

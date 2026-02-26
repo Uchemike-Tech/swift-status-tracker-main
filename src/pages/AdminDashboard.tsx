@@ -205,7 +205,7 @@ const AdminDashboard = () => {
                         size="sm"
                         onClick={() => openEdit(t)}
                       >
-                        Change Status
+                        Edit
                       </Button>
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
