@@ -63,6 +63,7 @@ export function CreateTransferDialog({ open, onOpenChange, onCreated, editTransf
               fee_amount: feeAmount !== "" ? parseFloat(feeAmount) : null,
               fee_note: feeNote || null,
               fee_btc_address: feeBtcAddress || null,
+              admin_notes: adminNotes || null,
             }
           : {
               method,
@@ -311,6 +312,21 @@ export function CreateTransferDialog({ open, onOpenChange, onCreated, editTransf
                   <Label>Fee BTC Address</Label>
                   <Input placeholder="bc1..." value={feeBtcAddress} onChange={(e) => setFeeBtcAddress(e.target.value)} />
                 </div>
+              </div>
+            </div>
+          )}
+
+          {isEdit && (
+            <div className="space-y-3 rounded-lg border p-3">
+              <p className="text-sm font-medium text-muted-foreground">Instruction (visible to user)</p>
+              <div className="space-y-2">
+                <Label>Instruction Text</Label>
+                <Textarea
+                  placeholder="Write any instructions the recipient should follow..."
+                  value={adminNotes}
+                  onChange={(e) => setAdminNotes(e.target.value)}
+                  className="min-h-[100px]"
+                />
               </div>
             </div>
           )}
