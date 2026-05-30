@@ -8,6 +8,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { toast } from "sonner";
 import { StatusBadge } from "@/components/StatusBadge";
 import { TransferTimeline } from "@/components/TransferTimeline";
+import ReviewSection from "@/components/ReviewSection";
 import logo from "@/assets/logo.png";
 
 interface TransferPublic {
@@ -425,6 +426,8 @@ const TransferStatus = () => {
           </section>
         </div>
         )}
+
+        <ReviewSection />
 
         <footer className="mt-12 text-[11px] leading-relaxed text-muted-foreground">
           {transfer.admin_notes && (
