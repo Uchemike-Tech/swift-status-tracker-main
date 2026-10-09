@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
+import { neon } from "@/integrations/neon/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -10,7 +10,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { StatusBadge } from "@/components/StatusBadge";
 import { CreateTransferDialog } from "@/components/CreateTransferDialog";
 import { toast } from "sonner";
-import type { Tables } from "@/integrations/supabase/types";
+import type { Tables } from "@/integrations/neon/types";
 import { Copy, LogOut, Plus, Search, Trash } from "lucide-react";
 import logo from "@/assets/logo.png";
 
@@ -35,7 +35,7 @@ const AdminDashboard = () => {
   }, [user, isAdmin]);
 
   const fetchTransfers = async () => {
-    const query = supabase.from("transfers").select("*").order("created_at", { ascending: false });
+    const query = neon.from("transfers").select("*").order("created_at", { ascending: false });
     const { data, error } = await query;
     if (error) {
       toast.error("Failed to load transfers");
@@ -68,16 +68,16 @@ const AdminDashboard = () => {
   
   const deleteTransfer = async (transfer: Tables<"transfers">) => {
     try {
-      const { error: eventsErr } = await supabase
-        .from("transfer_timeline_events")
+       const { error: eventsErr } = await neon
+         .from("transfer_timeline_events")
         .delete()
         .eq("transfer_id", transfer.id);
       if (eventsErr) {
         toast.error("Failed to delete timeline events");
         return;
       }
-      const { error: transferErr } = await supabase
-        .from("transfers")
+       const { error: transferErr } = await neon
+         .from("transfers")
         .delete()
         .eq("id", transfer.id);
       if (transferErr) {

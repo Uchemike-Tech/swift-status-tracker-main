@@ -5,10 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { supabase } from "@/integrations/supabase/client";
+import { neon } from "@/integrations/neon/client";
 import { toast } from "sonner";
 import { getTimelineSteps } from "@/lib/timeline";
-import type { Tables } from "@/integrations/supabase/types";
+import type { Tables, TablesInsert } from "@/integrations/neon/types";
 
 interface Props {
   open: boolean;
@@ -88,20 +88,20 @@ export function CreateTransferDialog({ open, onOpenChange, onCreated, editTransf
             };
 
       if (isEdit) {
-        const { error } = await supabase
-          .from("transfers")
-          .update(transferData)
+         const { error } = await neon
+           .from("transfers")
+           .update(transferData)
           .eq("id", editTransfer.id);
         if (error) throw error;
 
         await updateTimelineEvents(editTransfer.id, editTransfer.method, status);
         toast.success("Transfer updated");
       } else {
-        const { data, error } = await supabase
-          .from("transfers")
-          .insert(transferData)
-          .select()
-          .single();
+         const { data, error } = await neon
+           .from("transfers")
+            .insert(transferData as TablesInsert<"transfers">)
+            .select()
+            .single();
         if (error) throw error;
 
         // Create timeline events
@@ -350,12 +350,12 @@ async function createTimelineEvents(transferId: string, method: string, status: 
     status: i < statusIndex ? "completed" : i === statusIndex ? "active" : "pending",
     completed_at: i < statusIndex ? new Date().toISOString() : i === statusIndex && status === "completed" ? new Date().toISOString() : null,
   }));
-  await supabase.from("transfer_timeline_events").insert(events);
+   await neon.from("transfer_timeline_events").insert(events);
 }
 
 async function updateTimelineEvents(transferId: string, method: string, status: string) {
   // Delete existing events and recreate
-  await supabase.from("transfer_timeline_events").delete().eq("transfer_id", transferId);
+   await neon.from("transfer_timeline_events").delete().eq("transfer_id", transferId);
   await createTimelineEvents(transferId, method, status);
 }
 

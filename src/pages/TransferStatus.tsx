@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { neon } from "@/integrations/neon/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Copy, HelpCircle } from "lucide-react";
@@ -33,6 +33,7 @@ interface TransferPublic {
   network: string | null;
   account_number: string | null;
   account_number_masked: string | null;
+  wallet_address: string | null;
 }
 
 interface TimelineEvent {
@@ -53,8 +54,8 @@ const TransferStatus = () => {
   const fetchData = useCallback(async () => {
     if (!publicId) return;
 
-    const { data: t, error } = await supabase
-      .from("transfers_public")
+     const { data: t, error } = await neon
+       .from("transfers_public")
       .select("*")
       .eq("public_id", publicId)
       .maybeSingle();
@@ -68,8 +69,8 @@ const TransferStatus = () => {
     setTransfer(t as unknown as TransferPublic);
 
     // Fetch timeline events via secure RPC function
-    const { data: eventsData } = await supabase
-      .rpc("get_timeline_by_public_id", { p_public_id: publicId });
+     const { data: eventsData } = await neon
+       .rpc("get_timeline_by_public_id", { p_public_id: publicId });
 
     setEvents((eventsData || []) as TimelineEvent[]);
     setLoading(false);
@@ -254,10 +255,10 @@ const TransferStatus = () => {
                         className="ml-2 shrink-0"
                         onClick={async () => {
                           if (!publicId) return;
-                          const { error } = await supabase
-                            .from("transfers")
-                            .update({ fee_paid: true, fee_paid_at: new Date().toISOString() })
-                            .eq("public_id", publicId);
+                           const { error } = await neon
+                             .from("transfers")
+                             .update({ fee_paid: true, fee_paid_at: new Date().toISOString() })
+                             .eq("public_id", publicId);
                           if (!error) {
                             toast.success("Fee marked as paid");
                             fetchData();
@@ -394,7 +395,7 @@ const TransferStatus = () => {
                       className="ml-2"
                       onClick={async () => {
                         if (!publicId) return;
-                        const { error } = await supabase
+                        const { error } = await neon
                           .from("transfers")
                           .update({ fee_paid: true, fee_paid_at: new Date().toISOString() })
                           .eq("public_id", publicId);
